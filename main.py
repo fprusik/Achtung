@@ -126,7 +126,10 @@ def paint(gamer):
     coorx = gamer.playerx
     coory = gamer.playery
     #print(round(coorx, 1))
+    #print(type(coorx))
     gamer.player_line.append([coorx, coory])
+    #print('coorx: ' + str(coorx))
+    # server.paintRoute([coorx, coory])
     
     pygame.draw.circle(dis, gamer.color, (coorx, coory), rad)
     #pygame.draw.rect(dis, blue, (playerx, playery, 2, 2))
@@ -166,16 +169,22 @@ def gameLoop():
         if server.moveL == True:
             players[1].alpha += math.pi/45
             server.moveL = False
-            print('move L made')
         if server.moveR == True:
             players[1].alpha -= math.pi/45
             server.moveR = False
-            print('move R made')
-        nextmove(players[0])
-        nextmove(players[1])
+
+        for i in range(len(players)):
+            nextmove(players[i])
+            paint(players[i])
+
+        # nextmove(players[0])
+        # nextmove(players[1])
         
-        paint(players[0])
-        paint(players[1])
+        # paint(players[0])
+        # paint(players[1])
+
+        # server.paintRoute([players[1].playerx, players[1].playery])
+        server.paintRoute(players)
        
         pygame.display.update()
 
@@ -186,4 +195,4 @@ def gameLoop():
 t = Thread(target=server.listeningGuest)
 newgame()
 #gameLoop()
-quitgame()
+quitgame('No one')
